@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">{{ post.title }}</h1>
+                    <p class="card-text">{{ post.body }}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'post_edit' post.pk %}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit Post
+                        </a>
+                        <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Delete Post
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

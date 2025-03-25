@@ -1,1 +1,1 @@
-web: gunicorn django_project.wsgi
+web: gunicorn --bind 0.0.0.0:$PORT --workers=4 --threads=2 --timeout 120 django_project.wsgi:application

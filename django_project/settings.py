@@ -6,20 +6,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security and Production Settings
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key-for-dev')
-DEBUG = 'RENDER' not in os.environ
+DEBUG = False
 
-ALLOWED_HOSTS = ['https://blog-app-django-pdkf.onrender.com']
+
+ALLOWED_HOSTS = ['blog-app-django-pdkf.onrender.com', '*']
+
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Database Configuration for Render
+# Use an absolute path for the database in the persistent storage
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3'),
-        conn_max_age=600,
-        ssl_require=False
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join('/opt/render/project/src', 'db.sqlite3'),
+    }
 }
 
 # Static Files Configuration
@@ -29,7 +31,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -125,3 +126,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home" 
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'ERROR',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}

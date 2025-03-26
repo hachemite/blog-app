@@ -1,1 +1,1 @@
-web: waitress-serve --port=8000 django_project.wsgi:application
+web: gunicorn --bind 0.0.0.0:$PORT --workers=2 django_project.wsgi:application
